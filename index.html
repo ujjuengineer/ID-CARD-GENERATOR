@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>HH Goa 2026 — Get Your Builder Badge</title>
+<meta name="description" content="Upload a photo, generate your HH Goa 2026 builder badge in seconds, and share it on X with #FrameInGoa." />
+
+<!-- Open Graph (static fallback; swap og:image for a hosted render if you add a backend) -->
+<meta property="og:title" content="HH Goa 2026 — Builder Badge" />
+<meta property="og:description" content="I'm building at HH Goa 2026. Get your badge too." />
+<meta property="og:image" content="assets/og-default.png" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header class="topbar">
+  <div class="topbar__mark">
+    <span class="topbar__stamp">GOA · IN</span>
+    <span class="topbar__coords">15.2993°N&nbsp;&nbsp;74.1240°E</span>
+  </div>
+  <div class="topbar__hash">#FrameInGoa</div>
+</header>
+
+<main class="stage">
+
+  <section class="hero">
+    <p class="hero__eyebrow">15–16 AUG · BUILDERS WELCOME</p>
+    <h1 class="hero__title">HH GOA<span class="hero__year">2026</span></h1>
+    <p class="hero__sub">Upload a photo. Get your badge. Board the flight to Goa.</p>
+  </section>
+
+  <section class="ticket" id="ticket">
+
+    <!-- LEFT STUB: controls -->
+    <div class="ticket__stub">
+
+      <div class="field-group">
+        <span class="field-label">01 — Choose your format</span>
+        <div class="format-toggle" role="tablist">
+          <button type="button" class="format-btn is-active" data-format="A" role="tab" aria-selected="true">
+            <span class="format-btn__title">Profile Frame</span>
+            <span class="format-btn__sub">Round badge for your DP</span>
+          </button>
+          <button type="button" class="format-btn" data-format="B" role="tab" aria-selected="false">
+            <span class="format-btn__title">Builder ID Card</span>
+            <span class="format-btn__sub">Name · role · title</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <span class="field-label">02 — Your photo</span>
+        <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload your photo">
+          <input type="file" id="photoInput" accept="image/*,.heic,.HEIC" hidden />
+          <div class="dropzone__inner" id="dropzoneInner">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M12 16V4m0 0L7 9m5-5l5 5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <p><strong>Drop a photo</strong> or tap to browse</p>
+            <p class="dropzone__hint">JPG · PNG · HEIC — works straight off an iPhone</p>
+          </div>
+        </div>
+        <div class="reposition" id="repositionControls" hidden>
+          <label class="range-label" for="zoomRange">Zoom &amp; reposition</label>
+          <input type="range" id="zoomRange" min="100" max="250" value="100" />
+          <p class="reposition__hint">Drag the photo in the preview to recentre it</p>
+        </div>
+      </div>
+
+      <div class="field-group" id="idFields" hidden>
+        <span class="field-label">03 — Your details</span>
+        <label class="text-field">
+          <span>Name</span>
+          <input type="text" id="nameInput" placeholder="Ada Lovelace" maxlength="28" />
+        </label>
+        <label class="text-field">
+          <span>Role / stack</span>
+          <input type="text" id="roleInput" placeholder="Full-Stack · React + Django" maxlength="32" />
+        </label>
+        <label class="text-field">
+          <span>Builder title</span>
+          <input type="text" id="titleInput" placeholder="Shipping since day one" maxlength="32" />
+        </label>
+      </div>
+
+      <div class="field-group actions">
+        <button type="button" class="btn btn--primary" id="downloadBtn" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 16V4m0 12l-4-4m4 4l4-4M4 20h16" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Download badge
+        </button>
+        <button type="button" class="btn btn--ghost" id="shareBtn" disabled>
+          <svg width="15" height="15" viewBox="0 0 1200 1227" fill="currentColor" aria-hidden="true"><path d="M714.163 519.284 1160.89 0h-105.86L667.137 450.887 357.328 0H0l468.492 681.821L0 1226.37h105.866l409.625-476.152 327.181 476.152H1200L714.137 519.284h.026ZM569.165 687.828l-47.468-67.894-377.686-540.24h162.604l304.797 435.991 47.468 67.894 396.202 566.721H892.476L569.165 687.854v-.026Z"/></svg>
+          Share on X
+        </button>
+      </div>
+      <p class="status" id="statusMsg" aria-live="polite"></p>
+    </div>
+
+    <div class="ticket__perforation" aria-hidden="true"></div>
+
+    <!-- RIGHT STUB: live preview -->
+    <div class="ticket__preview">
+      <div class="preview__frame">
+        <canvas id="badgeCanvas" width="1080" height="1080"></canvas>
+        <div class="preview__empty" id="previewEmpty">
+          <p>Your badge<br/>appears here</p>
+        </div>
+      </div>
+      <div class="preview__barcode" aria-hidden="true">
+        <div class="barcode"></div>
+        <span class="preview__serial" id="serialTag">HHG-000000</span>
+      </div>
+    </div>
+
+  </section>
+
+  <p class="footnote">Everything renders in your browser — nothing is uploaded anywhere. Best on mobile Safari &amp; Chrome.</p>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
