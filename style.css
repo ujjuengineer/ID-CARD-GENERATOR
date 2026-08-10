@@ -91,7 +91,33 @@ body{
   overflow:hidden;
 }
 @media(max-width: 860px){
-  .ticket{ grid-template-columns: 1fr; }
+  .ticket{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+    padding: 30px 22px;
+  }
+  /* Collapse the two visual "columns" so their children become direct
+     flex items of .ticket — this lets us reorder individual steps
+     (rather than whole columns) with `order` below. */
+  .ticket__stub,
+  .ticket__preview{
+    display:contents;
+  }
+  .ticket__perforation{
+    display:none;
+  }
+
+  /* Desired mobile order: format → upload photo → live preview →
+     zoom/rotate controls → details → actions → status. */
+  .step-format{ order:1; }
+  .step-photo{ order:2; }
+  .preview__frame{ order:3; margin:0 auto; }
+  .preview__barcode{ order:4; }
+  #repositionControls{ order:5; }
+  #idFields{ order:6; }
+  .actions{ order:7; }
+  #statusMsg{ order:8; }
 }
 
 .ticket__stub{ padding: 34px 30px; display:flex; flex-direction:column; gap:26px; }
